@@ -1,8 +1,8 @@
 <?php
 session_start();
-if(isset($_SESSION['usuario_id'])) {
-    header("Location: pages/index.php");
-    exit();
+if (isset($_SESSION['usuario_id'])) {
+  header("Location: pages/");
+  exit();
 }
 require 'system/config.php';
 $mensaje_error = '';
@@ -13,16 +13,20 @@ if (isset($_POST['usuario']) && isset($_POST['contra']) && !empty($_POST['usuari
   $contra = hash('sha256', $contra); // -> 6dcd4ce23d88e2ee9568ba546c007c63a0b3f1f5b7f8e9b1c2f3a4e5b6c7d8e9
 
   // Verificar si el usuario existe
-  $result = mysqli_query($conn, "SELECT id, contra FROM usuario WHERE (cedula = '$usuario' OR correo = '$usuario') AND estado=1 LIMIT 1");
+  $result = mysqli_query($conn, "SELECT id, contra, estado FROM usuario WHERE (cedula = '$usuario' OR correo = '$usuario') LIMIT 1");
 
   if (mysqli_num_rows($result) > 0) {
     $row = mysqli_fetch_assoc($result);
-    if ($row['contra'] == $contra) {
-      $_SESSION['usuario_id'] = $row['id'];
-      header("Location: pages/index.php");
-      exit();
-    } else {
+    if ($row['estado'] != 1) {
+      //si el usuario no esta activo
+      $mensaje_error = 'Usuario inactivo';
+    } else if ($row['contra'] != $contra) {
+      //si la contraseña es incorrecta
       $mensaje_error = 'Contraseña incorrecta';
+    } else {
+      $_SESSION['usuario_id'] = $row['id'];
+      header("Location: pages/");
+      exit();
     }
   } else {
     $mensaje_error = 'Cedula o Correo Electronico incorrecto';

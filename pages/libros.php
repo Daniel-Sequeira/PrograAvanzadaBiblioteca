@@ -5,12 +5,13 @@ $mensaje = [];
 if (isset($_POST['accion'])) {
   switch ($_POST['accion']) {
     case 'agregar':
+      $codigo = mysqli_real_escape_string($conn, $_POST['codigo']);
       $nombre = mysqli_real_escape_string($conn, $_POST['nombre']);
       $autor = mysqli_real_escape_string($conn, $_POST['autor']);
       $genero = mysqli_real_escape_string($conn, $_POST['genero']);
       $anno = mysqli_real_escape_string($conn, $_POST['anno']);
 
-      $sql = "INSERT INTO libro (nombre, autor, genero, anno) VALUES ('$nombre', '$autor', '$genero', '$anno')";
+      $sql = "INSERT INTO libro (codigo, nombre, autor, genero, anno) VALUES ('$codigo', '$nombre', '$autor', '$genero', '$anno')";
       if (mysqli_query($conn, $sql)) {
         $mensaje['mensaje'] = "Libro agregado correctamente.";
         $mensaje['tipo'] = 'success';
@@ -23,11 +24,12 @@ if (isset($_POST['accion'])) {
     case 'editar':
       $id_libro = mysqli_real_escape_string($conn, $_POST['id_libro']);
       if(is_numeric($id_libro) && $id_libro > 0 && $id_libro == (int)$id_libro) {
+        $codigo = mysqli_real_escape_string($conn, $_POST['codigo']);
         $nombre = mysqli_real_escape_string($conn, $_POST['nombre']);
         $autor = mysqli_real_escape_string($conn, $_POST['autor']);
         $genero = mysqli_real_escape_string($conn, $_POST['genero']);
         $anno = mysqli_real_escape_string($conn, $_POST['anno']);
-        $sql = "UPDATE libro SET nombre='$nombre', autor='$autor', genero='$genero', anno='$anno' WHERE id='$id_libro'";
+        $sql = "UPDATE libro SET codigo='$codigo', nombre='$nombre', autor='$autor', genero='$genero', anno='$anno' WHERE id='$id_libro'";
         if (mysqli_query($conn, $sql)) {
           $mensaje['mensaje'] = "Libro actualizado correctamente.";
           $mensaje['tipo'] = 'success';
@@ -83,6 +85,7 @@ if (!empty($mensaje)) {
   <table class="table table-striped table-sm">
     <thead>
       <tr>
+        <th scope="col">Codigo</th>
         <th scope="col">Nombre</th>
         <th scope="col">Autor</th>
         <th scope="col">Género</th>
@@ -99,6 +102,7 @@ if (!empty($mensaje)) {
         $estado_nombre = $libro['estado'] == 1 ? '<span data-feather="check-circle" class="align-text-bottom"></span>'
           : '<span data-feather="clock" class="align-text-bottom"></span>';
         echo "<tr id=\"libro-{$libro['id']}\">
+                  <td>{$libro['codigo']}</td>
                   <td>{$libro['nombre']}</td>
                   <td>{$libro['autor']}</td>
                   <td>{$libro['genero']}</td>
@@ -132,6 +136,10 @@ if (!empty($mensaje)) {
         </div>
         <form method="post" action="">
           <div class="modal-body">
+            <div class="mb-3">
+              <label for="codigo" class="form-label">Codigo</label>
+              <input type="text" class="form-control" id="codigo" name="codigo" required placeholder="LB05-1540">
+            </div>
             <div class="mb-3">
               <label for="nombre" class="form-label">Nombre</label>
               <input type="text" class="form-control" id="nombre" name="nombre" required placeholder="Las aventuras de Sherlock Holmes">
@@ -172,6 +180,10 @@ if (!empty($mensaje)) {
           <input type="hidden" name="id_libro" id="id_libro">
           <div class="modal-body">
             <div class="mb-3">
+              <label for="codigoEdit" class="form-label">Codigo</label>
+              <input type="text" class="form-control" id="codigoEdit" name="codigo" required placeholder="LB05-1540">
+            </div>
+            <div class="mb-3">
               <label for="nombreEdit" class="form-label">Nombre</label>
               <input type="text" class="form-control" id="nombreEdit" name="nombre" required placeholder="Las aventuras de Sherlock Holmes">
             </div>
@@ -206,10 +218,12 @@ if (!empty($mensaje)) {
       document.getElementById('id_libro').value = id_libro;
       document.getElementById('spanNumLibro').innerText = id_libro;
       const fila = document.getElementById('libro-' + id_libro);
-      const nombre = fila.children[0].innerText;
-      const autor = fila.children[1].innerText;
-      const genero = fila.children[2].innerText;
-      const anno = fila.children[3].innerText;
+      const codigo = fila.children[0].innerText;
+      const nombre = fila.children[1].innerText;
+      const autor = fila.children[2].innerText;
+      const genero = fila.children[3].innerText;
+      const anno = fila.children[4].innerText;
+      document.getElementById('codigoEdit').value = codigo;
       document.getElementById('nombreEdit').value = nombre;
       document.getElementById('autorEdit').value = autor;
       document.getElementById('generoEdit').value = genero;

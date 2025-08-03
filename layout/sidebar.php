@@ -45,5 +45,16 @@
                 </a>
             </li>
         </ul>
+        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase">
+            <span>Salir del Sistema</span>
+        </h6>
+        <ul class="nav flex-column mb-2">
+            <li class="nav-item">
+                <a class="nav-link" href="../logout.php">
+                    <span data-feather="log-out" class="align-text-bottom"></span>
+                    Cerrar Sesión
+                </a>
+            </li>
+        </ul>
     </div>
 </nav>

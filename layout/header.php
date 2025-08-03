@@ -7,6 +7,7 @@
     <title>Dashboard - Biblioteca</title>
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/dashboard.css" rel="stylesheet">
+    <?= basename($_SERVER['PHP_SELF'])=="reservar.php"?'<link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.css"/>':''?>
 </head>
 
 <body>
@@ -16,12 +17,6 @@
         <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <input class="form-control form-control-dark w-100 rounded-0 border-0" type="text" placeholder="Search" aria-label="Search">
-        <div class="navbar-nav">
-            <div class="nav-item text-nowrap">
-                <a class="nav-link px-3" href="../logout.php">Cerrar Sesion</a>
-            </div>
-        </div>
     </header>
 
     <div class="container-fluid">
