@@ -1,9 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.2
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 30-07-2025 a las 05:59:30
+-- Tiempo de generación: 04-08-2025 a las 01:50:41
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `cliente` (
   `id` int(11) NOT NULL,
-  `cedula` varchar(64) NOT NULL,
+  `cedula` int(11) NOT NULL,
   `nombre` varchar(128) NOT NULL,
   `telefono` varchar(64) NOT NULL,
   `correo` varchar(128) NOT NULL,
@@ -42,9 +42,7 @@ CREATE TABLE `cliente` (
 --
 
 INSERT INTO `cliente` (`id`, `cedula`, `nombre`, `telefono`, `correo`, `fecha_creacion`, `estado`) VALUES
-(1, '117840141', 'Jeison Cliente 2', '123', 'em.jeison@gmail.com', '2025-07-15 20:10:10', 1),
-(2, '108500160', 'MAURICIO RAFAEL SOTO RODRIGUEZ', '2222', 'm.jeison117@outlook.es', '2025-07-15 20:20:43', 1),
-(3, '115500155', 'DIEGO ALEJANDRO ALFARO ALFARO', '123', '123@outlook.es', '2025-07-15 20:53:36', 1);
+(1, 503720273, 'DANIEL ANTONIO SEQUEIRA GAITAN', '60577713', 'danielsequeira22@gmail.com', '2025-08-02 21:04:22', 1);
 
 -- --------------------------------------------------------
 
@@ -54,7 +52,7 @@ INSERT INTO `cliente` (`id`, `cedula`, `nombre`, `telefono`, `correo`, `fecha_cr
 
 CREATE TABLE `libro` (
   `id` int(11) NOT NULL,
-  `codigo` varchar(128) DEFAULT NULL,
+  `codigo` int(11) NOT NULL,
   `nombre` varchar(256) NOT NULL,
   `autor` varchar(128) NOT NULL,
   `genero` varchar(64) NOT NULL,
@@ -68,21 +66,20 @@ CREATE TABLE `libro` (
 --
 
 INSERT INTO `libro` (`id`, `codigo`, `nombre`, `autor`, `genero`, `anno`, `fecha_creacion`, `estado`) VALUES
-(1, '123sa', '1984 LIBRO ESTRELLA', 'George Orwell', 'Distopía', '1949', '2025-06-24 20:39:09', 2),
-(2, NULL, 'El Principito', 'Antoine de Saint-Exupéry', 'Fantasía', '1943', '2025-06-24 20:39:09', 1),
-(3, 'asd1233', 'Cien años de soledad', 'Gabriel García Márquez', 'Realismo mágico', '1967', '2025-06-24 20:39:09', 1),
-(4, NULL, 'Orgullo y prejuicio', 'Jane Austen', 'Romance', '1813', '2025-06-24 20:39:09', 1),
-(5, NULL, 'El gran Gatsby', 'F. Scott Fitzgerald', 'Ficción', '1925', '2025-06-24 20:39:09', 2),
-(6, NULL, 'Crimen y castigo parte 3', 'Fiódor Dostoyevski', 'Filosófico', '1974', '2025-06-24 20:39:09', 1),
-(7, NULL, 'El viejo y el mar', 'Ernest Hemingway', 'Aventura', '1952', '2025-06-24 20:39:09', 2),
-(8, NULL, 'Test', 'Juan', 'Detective', '1941', '2025-06-24 21:14:23', 0),
-(9, NULL, 'test2', 'Juan2', 'Detective2', '2025', '2025-06-24 21:16:04', 0),
-(10, NULL, 'Libro de cuentos', 'Juan2', 'Detective2', '2025', '2025-06-24 21:23:16', 2),
-(11, NULL, 'jeison m', 'asdasd', 'Detective3', '2025', '2025-06-24 21:23:39', 1),
-(12, NULL, 'jeison m', 'asdasd', 'Detective3', '2025', '2025-06-24 21:24:01', 1),
-(13, NULL, 'jeison m', 'asdasd', 'Detective3', '2025', '2025-06-24 21:24:10', 1),
-(14, '123as', 'Aventuras de Jeison Mena', 'Jeison Mena', 'Accion', '1908', '2025-06-24 21:41:58', 2),
-(15, 'test123', 'asda', '1312', '123sads', '2012', '2025-07-29 20:57:20', 2);
+(1, 0, '1984 LIBRO ESTRELLA', 'George Orwell', 'Distopía', '1949', '2025-06-24 20:39:09', 2),
+(2, 0, 'El Principito', 'Antoine de Saint-Exupéry', 'Fantasía', '1943', '2025-06-24 20:39:09', 1),
+(3, 0, 'Cien años de soledad', 'Gabriel García Márquez', 'Realismo mágico', '1967', '2025-06-24 20:39:09', 1),
+(4, 0, 'Orgullo y prejuicio', 'Jane Austen', 'Romance', '1813', '2025-06-24 20:39:09', 1),
+(5, 0, 'El gran Gatsby', 'F. Scott Fitzgerald', 'Ficción', '1925', '2025-06-24 20:39:09', 1),
+(6, 0, 'Crimen y castigo parte 3', 'Fiódor Dostoyevski', 'Filosófico', '1974', '2025-06-24 20:39:09', 1),
+(7, 0, 'El viejo y el mar', 'Ernest Hemingway', 'Aventura', '1952', '2025-06-24 20:39:09', 2),
+(8, 0, 'Test', 'Juan', 'Detective', '1941', '2025-06-24 21:14:23', 0),
+(9, 0, 'test2', 'Juan2', 'Detective2', '2025', '2025-06-24 21:16:04', 0),
+(10, 0, 'Libro de cuentos', 'Juan2', 'Detective2', '2025', '2025-06-24 21:23:16', 1),
+(11, 0, 'jeison m', 'asdasd', 'Detective3', '2025', '2025-06-24 21:23:39', 1),
+(12, 0, 'jeison m', 'asdasd', 'Detective3', '2025', '2025-06-24 21:24:01', 1),
+(13, 0, 'jeison m', 'asdasd', 'Detective3', '2025', '2025-06-24 21:24:10', 1),
+(14, 0, 'Aventuras de Jeison Mena', 'Jeison Mena', 'Accion', '1908', '2025-06-24 21:41:58', 1);
 
 -- --------------------------------------------------------
 
@@ -95,7 +92,7 @@ CREATE TABLE `reserva` (
   `libro_id` int(11) NOT NULL,
   `cliente_id` int(11) NOT NULL,
   `fecha_reserva` datetime NOT NULL,
-  `fecha_devolucion` date NOT NULL,
+  `fecha_devolucion` datetime NOT NULL,
   `fecha_devuelto` datetime DEFAULT NULL,
   `estado` tinyint(1) NOT NULL COMMENT '1=activo, 0=devuelto'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -105,11 +102,7 @@ CREATE TABLE `reserva` (
 --
 
 INSERT INTO `reserva` (`id`, `libro_id`, `cliente_id`, `fecha_reserva`, `fecha_devolucion`, `fecha_devuelto`, `estado`) VALUES
-(1, 14, 1, '2025-07-30 00:00:00', '2025-08-08', NULL, 1),
-(2, 1, 1, '2025-07-30 05:50:34', '2025-07-31', NULL, 1),
-(3, 15, 1, '2025-07-30 05:51:30', '2025-07-31', NULL, 1),
-(4, 5, 1, '2025-07-30 05:52:12', '2025-08-02', NULL, 1),
-(5, 10, 2, '2025-07-30 05:55:01', '2025-08-02', NULL, 1);
+(1, 1, 1, '2025-08-03 05:04:51', '2025-08-04 00:00:00', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -132,7 +125,7 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`id`, `nombre`, `correo`, `contra`, `cedula`, `fecha_creacion`, `estado`) VALUES
-(1, 'JEISON EDUARDO MENA MARIN', 'jeison@gmail.com', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', '117840141', '2025-06-17 21:06:20', 1);
+(1, 'Jeison Mena Marin', 'jeison@gmail.com', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', '12345678', '2025-06-17 21:06:20', 1);
 
 --
 -- Índices para tablas volcadas
@@ -170,19 +163,19 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `libro`
 --
 ALTER TABLE `libro`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de la tabla `reserva`
 --
 ALTER TABLE `reserva`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
