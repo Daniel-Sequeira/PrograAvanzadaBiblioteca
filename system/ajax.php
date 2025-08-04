@@ -5,6 +5,8 @@ $respuesta = json_encode(['success' => false, 'message' => 'Error al procesar la
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
     switch ($data['accion']) {
+
+        //Reserva de libros
         case 'reservar':
             if (isset($data['libro_id']) && isset($data['cliente_id']) && isset($data['fecha_devolucion'])) {
                 $libro_id = $data['libro_id'];
@@ -21,10 +23,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
             break;
-        default:
+        
+            //Mostrar lista de libros reservados
+             case 'listar_reservas':
+            if (isset($data['cliente_id'])) {
+                $cliente_id = intval($data['cliente_id']);
+                $reservas = [];
+                $sql = "
+                    SELECT r.id as reserva_id, l.nombre, l.autor, l.genero, r.fecha_devolucion
+                    FROM reserva r
+                    INNER JOIN libro l ON l.id = r.libro_id
+                    WHERE r.cliente_id = $cliente_id AND r.estado = 1
+                ";
+                $q = mysqli_query($conn, $sql);
+                while ($r = mysqli_fetch_assoc($q)) {
+                    $reservas[] = $r;
+                }
+                $respuesta = json_encode(['success'=>true, 'prestamos'=>$reservas]);
+            }
+            break;
+
+            //Devolver libros
+            case 'devolver':
+            if (isset($data['reserva_id'])) {
+                $reserva_id = intval($data['reserva_id']);
+                // Termina la reserva, estado=0 y la fecha de devolución real con NOW()
+                $query = "UPDATE reserva SET estado=0, fecha_devuelto=NOW() WHERE id=$reserva_id";
+                if (mysqli_query($conn, $query)) {
+                    // Obtener el libro relacionado
+                    $q = mysqli_query($conn, "SELECT libro_id FROM reserva WHERE id = $reserva_id");
+                    $libro = mysqli_fetch_assoc($q);
+                    if ($libro) {
+                        $libro_id = intval($libro['libro_id']);
+                        // Poner el libro como disponible
+                        mysqli_query($conn, "UPDATE libro SET estado=1 WHERE id=$libro_id");
+                        $respuesta = json_encode(['success' => true, 'message' => 'Libro devuelto correctamente.']);
+                    }
+                } else {
+                    $respuesta = json_encode(['success' => false, 'message' => 'No se pudo actualizar la reserva.']);
+                }
+            }
+            break;
+            
+            default:
             $respuesta = json_encode(['success' => false, 'message' => 'Acción no reconocida.']);
             break;
+             
     }
 }
 
 echo $respuesta;
+?>
