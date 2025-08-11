@@ -8,28 +8,38 @@ require 'system/config.php';
 $mensaje_error = '';
 //login
 if (isset($_POST['usuario']) && isset($_POST['contra']) && !empty($_POST['usuario']) && !empty($_POST['contra'])) {
-  $usuario = mysqli_real_escape_string($conn, $_POST['usuario']);
-  $contra = $_POST['contra'];
-  $contra = hash('sha256', $contra); // -> 6dcd4ce23d88e2ee9568ba546c007c63a0b3f1f5b7f8e9b1c2f3a4e5b6c7d8e9
-
-  // Verificar si el usuario existe
-  $result = mysqli_query($conn, "SELECT id, contra, estado FROM usuario WHERE (cedula = '$usuario' OR correo = '$usuario') LIMIT 1");
-
-  if (mysqli_num_rows($result) > 0) {
-    $row = mysqli_fetch_assoc($result);
-    if ($row['estado'] != 1) {
-      //si el usuario no esta activo
-      $mensaje_error = 'Usuario inactivo';
-    } else if ($row['contra'] != $contra) {
-      //si la contraseña es incorrecta
-      $mensaje_error = 'Contraseña incorrecta';
-    } else {
-      $_SESSION['usuario_id'] = $row['id'];
-      header("Location: pages/");
-      exit();
-    }
+  $recaptcha_response = $_POST['g-recaptcha-response'];
+  // Verificar la respuesta de reCAPTCHA
+  $recaptcha_secret = '6LdWD5wrAAAAAMjw5u4EUk-4H8DpfDejdHO27JsC';
+  $recaptcha_url = 'https://www.google.com/recaptcha/api/siteverify';
+  $recaptcha = file_get_contents($recaptcha_url . '?secret=' . $recaptcha_secret . '&response=' . $recaptcha_response);
+  $recaptcha = json_decode($recaptcha);
+  if (!$recaptcha->success) {
+    $mensaje_error = 'Por favor, verifica el reCAPTCHA.';
   } else {
-    $mensaje_error = 'Cedula o Correo Electronico incorrecto';
+    $usuario = mysqli_real_escape_string($conn, $_POST['usuario']);
+    $contra = $_POST['contra'];
+    $contra = hash('sha256', $contra); // -> 6dcd4ce23d88e2ee9568ba546c007c63a0b3f1f5b7f8e9b1c2f3a4e5b6c7d8e9
+
+    // Verificar si el usuario existe
+    $result = mysqli_query($conn, "SELECT id, contra, estado FROM usuario WHERE (cedula = '$usuario' OR correo = '$usuario') LIMIT 1");
+
+    if (mysqli_num_rows($result) > 0) {
+      $row = mysqli_fetch_assoc($result);
+      if ($row['estado'] != 1) {
+        //si el usuario no esta activo
+        $mensaje_error = 'Usuario inactivo';
+      } else if ($row['contra'] != $contra) {
+        //si la contraseña es incorrecta
+        $mensaje_error = 'Contraseña incorrecta';
+      } else {
+        $_SESSION['usuario_id'] = $row['id'];
+        header("Location: pages/");
+        exit();
+      }
+    } else {
+      $mensaje_error = 'Cedula o Correo Electronico incorrecto';
+    }
   }
 }
 ?>
@@ -62,6 +72,9 @@ if (isset($_POST['usuario']) && isset($_POST['contra']) && !empty($_POST['usuari
         <input name="contra" type="password" class="form-control" id="floatingPassword" placeholder="Password">
         <label for="floatingPassword">Contraseña</label>
       </div>
+      <div class="mb-2">
+        <div class="g-recaptcha" data-sitekey="6LdWD5wrAAAAAOHrJj030tsigV_gR8tBTC1gd4gL"></div>
+      </div>
 
       <?php
       if (!empty($mensaje_error)) {
@@ -79,7 +92,7 @@ if (isset($_POST['usuario']) && isset($_POST['contra']) && !empty($_POST['usuari
   </main>
 
 
-
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </body>
 
 </html>

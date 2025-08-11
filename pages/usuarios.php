@@ -87,7 +87,7 @@ if (!empty($mensaje)) {
 }
 ?>
 <div class="table-responsive">
-    <table class="table table-striped table-sm">
+    <table id="tablaUsuarios" class="table table-striped table-sm w-100">
         <thead>
             <tr>
                 <th scope="col">Cedula</th>
@@ -196,7 +196,28 @@ if (!empty($mensaje)) {
         </div>
     </div>
 
+    <!-- jQuery para DataTables -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<!-- DataTables core -->
+<script src="https://cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
+
+<!-- DataTables con Bootstrap 5 -->
+<script src="https://cdn.datatables.net/2.0.7/js/dataTables.bootstrap5.min.js"></script>
+
     <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+        new DataTable('#tablaUsuarios', {
+            responsive: true,
+            language: {
+                url: 'https://cdn.datatables.net/plug-ins/2.0.7/i18n/es-ES.json'
+            }
+        });
+    });
+
+
+
         function editarUsuario(id_usuario) {
             var editModal = new bootstrap.Modal(document.getElementById('editModal'));
             editModal.show();
